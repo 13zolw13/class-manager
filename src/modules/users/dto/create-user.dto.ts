@@ -1,4 +1,6 @@
-import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
+import { Type } from 'class-transformer';
+import { IsEmail, IsNotEmpty, IsString, ValidateNested } from 'class-validator';
+import { ContactInformationDto } from './contactinfo.dto';
 
 export class CreateUserDto {
   @IsString()
@@ -18,7 +20,8 @@ export class CreateUserDto {
   @IsNotEmpty()
   lastName: string;
 
-  @IsString()
+  @ValidateNested({ each: true })
+  @Type(() => ContactInformationDto)
   @IsNotEmpty()
-  telephone: string;
+  contactInfo: ContactInformationDto;
 }
