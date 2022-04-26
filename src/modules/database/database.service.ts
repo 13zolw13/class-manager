@@ -1,20 +1,52 @@
 import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { TypeOrmModuleOptions, TypeOrmOptionsFactory } from '@nestjs/typeorm';
 import { User } from '../users/entities/user.entity';
 
 @Injectable()
 export class DatabaseService implements TypeOrmOptionsFactory {
+  constructor(private configService: ConfigService) {}
   createTypeOrmOptions(): TypeOrmModuleOptions {
-    return {
-      type: 'postgres',
-      host: 'localhost',
-      port: 5432,
-      username: 'postgres',
-      password: 'postgres',
-      database: 'classmanager',
-      // entities: [__dirname + '/**/*.entity{.ts,.js}'],//
-      entities: [User],
-      synchronize: false,
-    };
+    return 'TEST' !== 'TEST'
+      ? {
+          name: 'default',
+          type: 'postgres',
+          host: 'localhost',
+          port: 5432,
+          username: 'postgres',
+          password: 'postgres',
+          database: 'classmanager',
+          autoLoadEntities: true,
+          entities: [User],
+          logging: true,
+          // migrationsTableName: 'migrations',
+          synchronize: false,
+          migrations: [__dirname + '/migrations/*{.ts,.js}'],
+          migrationsRun: true,
+          cli: {
+            migrationsDir: './src/migrations',
+          },
+        }
+      : {
+          name: 'default',
+          type: 'postgres',
+          host: 'localhost',
+          port: 5432,
+          username: 'postgres',
+          password: 'postgres',
+          database: 'classmanager_test',
+          entities: ['/src/**/*.entity.{ts,js}'],
+          // entities: [User],
+
+          logging: true,
+          autoLoadEntities: true,
+          migrationsRun: true,
+          migrations: ['/src/migrations/**/*{.ts,.js}'],
+          synchronize: false,
+          cli: {
+            entitiesDir: 'src/modules/users/entities',
+            migrationsDir: 'src/migrations',
+          },
+        };
   }
 }
