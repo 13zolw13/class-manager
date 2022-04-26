@@ -1,5 +1,12 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { UserRole } from '../UserRole';
+import { ContactInformation } from './contactInfo.entity';
 
 @Entity('User')
 export class User {
@@ -11,9 +18,9 @@ export class User {
 
   @Column()
   email: string;
-
-  @Column()
-  telephone: string;
+  @OneToOne(() => ContactInformation)
+  @JoinColumn()
+  contactInfo: ContactInformation;
 
   @Column({
     type: 'enum',
