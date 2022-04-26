@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
+import { MapUserDto } from './MapUserDto';
 
 @Injectable()
 export class UsersService {
@@ -12,12 +13,7 @@ export class UsersService {
   ) {}
 
   create(createUserDto: CreateUserDto): Promise<User> {
-    const user = new User();
-    user.username = createUserDto.firstName;
-    user.email = createUserDto.email;
-    user.telephone = createUserDto.telephone;
-    user.role = 'user';
-    return this.userRepository.save(user);
+    return this.userRepository.save(new MapUserDto(createUserDto).returnUser());
   }
 
   findAll() {
