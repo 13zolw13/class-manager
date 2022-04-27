@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { ContactInformation } from './entities/contactInfo.entity';
 import { User } from './entities/user.entity';
 import { MapUserDto } from './MapUserDto';
 
@@ -10,14 +11,22 @@ import { MapUserDto } from './MapUserDto';
 export class UsersService {
   constructor(
     @InjectRepository(User) private readonly userRepository: Repository<User>,
+    @InjectRepository(ContactInformation)
+    private readonly contactInfoRepository: Repository<ContactInformation>,
   ) {}
 
-  create(createUserDto: CreateUserDto): Promise<User> {
-    return this.userRepository.save(new MapUserDto(createUserDto).returnUser());
+  async create(createUserDto: CreateUserDto): Promise<User> {
+    const UserContactInfo = await this.contactInfoRepository.create(
+      new MapUserDto(createUserDto).returnUserContactInfo(),
+    );
+
+    return await this.userRepository.save(
+      new MapUserDto(createUserDto).returnUser(UserContactInfo),
+    );
   }
 
   findAll() {
-    return this.userRepository.find();
+    return this.userRepository.find({ relations: ['contactInfo'] });
   }
 
   findOne(id: number) {
