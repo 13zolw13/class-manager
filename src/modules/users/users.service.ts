@@ -19,10 +19,10 @@ export class UsersService {
   ) {}
 
   async create(createUserDto: CreateUserDto): Promise<User> {
-    const UserContactInfo = await this.contactInfoRepository.create(
+    const UserContactInfo = await this.contactInfoRepository.save(
       new MapUserDto(createUserDto).returnUserContactInfo(),
     );
-
+    console.log(UserContactInfo);
     return await this.userRepository.save(
       new MapUserDto(createUserDto).returnUser(UserContactInfo),
     );
@@ -32,8 +32,8 @@ export class UsersService {
     return this.userRepository.find({ relations: ['contactInfo'] });
   }
 
-  findOne(email: string): Promise<User> {
-    return this.userRepository.findOne({ email: email });
+  findOne(user: string): Promise<User> {
+    return this.userRepository.findOne({ username: user });
   }
 
   update(id: number, _updateUserDto: UpdateUserDto) {

@@ -8,7 +8,7 @@ import { User } from '../users/entities/user.entity';
 export class DatabaseService implements TypeOrmOptionsFactory {
   constructor(private configService: ConfigService) {}
   createTypeOrmOptions(): TypeOrmModuleOptions {
-    return 'TEST' !== 'TEST'
+    return 'TEST' === 'TEST'
       ? {
           name: 'default',
           type: 'postgres',
@@ -21,7 +21,7 @@ export class DatabaseService implements TypeOrmOptionsFactory {
           entities: [User, ContactInformation],
           logging: true,
           // migrationsTableName: 'migrations',
-          synchronize: false,
+          synchronize: true,
           migrations: [__dirname + '/migrations/*{.ts,.js}'],
           migrationsRun: true,
           cli: {

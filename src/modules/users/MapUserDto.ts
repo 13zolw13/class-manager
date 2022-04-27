@@ -9,8 +9,8 @@ export class MapUserDto {
   returnUser(UserContactInfo: ContactInformation): User {
     const readyUserToSave = new User();
     readyUserToSave.username = this.user.username;
-    readyUserToSave.firstName = this.user.firstName;
-    readyUserToSave.lastName = this.user.lastName;
+    // readyUserToSave.firstName = this.user.firstName;
+    // readyUserToSave.lastName = this.user.lastName;
     readyUserToSave.password = this.user.password;
     readyUserToSave.email = this.user.email;
     readyUserToSave.role = UserRole.ADMIN;
