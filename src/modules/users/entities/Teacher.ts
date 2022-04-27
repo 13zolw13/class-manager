@@ -1,12 +1,6 @@
-import {
-  Column,
-  Entity,
-  JoinColumn,
-  OneToOne
-} from 'typeorm';
+import { Column, Entity, JoinColumn, OneToOne } from 'typeorm';
 import { ContactInformation } from './contactInfo.entity';
 import { User } from './user.entity';
-
 
 @Entity('Teacher')
 export class Teacher extends User {
