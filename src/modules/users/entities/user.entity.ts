@@ -18,9 +18,9 @@ export class User {
 
   @Column()
   email: string;
-  @OneToOne(() => ContactInformation)
-  @JoinColumn()
-  contactInfo: ContactInformation;
+
+  @Column()
+  password: string;
 
   @Column({
     type: 'enum',
@@ -28,4 +28,8 @@ export class User {
     default: UserRole.STUDENT,
   })
   role: UserRole;
+
+  @OneToOne(() => ContactInformation)
+  @JoinColumn()
+  contactInfo: ContactInformation;
 }

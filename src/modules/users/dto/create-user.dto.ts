@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import { IsEmail, IsNotEmpty, IsString, ValidateNested } from 'class-validator';
-import { ContactInformationDto } from './contactinfo.dto';
+import { ContactInformationDto } from './contactInfo.dto';
 
 export class CreateUserDto {
   @ApiProperty({ default: 'example@example.com', description: 'User email' })
@@ -21,6 +21,10 @@ export class CreateUserDto {
   @IsString()
   @IsNotEmpty()
   lastName: string;
+
+  @ApiProperty({ description: 'Username', default: 'example' })
+  @IsString()
+  username: string;
   @ApiProperty({
     type: () => ContactInformationDto,
     description: 'User contact information',
