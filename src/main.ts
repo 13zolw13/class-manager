@@ -1,7 +1,7 @@
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule } from '@nestjs/swagger';
-import { session } from 'passport';
+import * as session from 'express-session';
 import { corsOptions } from './config/corsOptions';
 import { sessionConfig } from './config/sessionConfig';
 import { SwaggerConfig } from './config/swagger';
