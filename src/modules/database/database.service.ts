@@ -21,7 +21,7 @@ export class DatabaseService implements TypeOrmOptionsFactory {
           entities: [User, ContactInformation],
           logging: true,
           // migrationsTableName: 'migrations',
-          synchronize: true,
+          synchronize: false,
           migrations: [__dirname + '/migrations/*{.ts,.js}'],
           migrationsRun: true,
           cli: {
