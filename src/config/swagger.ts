@@ -5,4 +5,5 @@ export const SwaggerConfig = new DocumentBuilder()
   .setDescription('The Class Manager for teachers and students')
   .setVersion('1.0')
   .addTag('Class Manager')
+  .addBearerAuth()
   .build();
