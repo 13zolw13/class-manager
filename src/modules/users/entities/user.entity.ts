@@ -1,4 +1,7 @@
+import * as argon2 from 'argon2';
 import {
+  BeforeInsert,
+  BeforeUpdate,
   Column,
   Entity,
   JoinColumn,
@@ -7,7 +10,6 @@ import {
 } from 'typeorm';
 import { UserRole } from '../UserRole';
 import { ContactInformation } from './contactInfo.entity';
-
 @Entity('User')
 export class User {
   @PrimaryGeneratedColumn()
@@ -32,4 +34,15 @@ export class User {
   @OneToOne(() => ContactInformation)
   @JoinColumn()
   contactInfo: ContactInformation;
+
+  @BeforeInsert()
+  @BeforeUpdate()
+  async hashPassword() {
+    try {
+      const hash = await argon2.hash(this.password);
+      this.password = hash;
+    } catch (err: any) {
+      throw new Error(err.message);
+    }
+  }
 }
