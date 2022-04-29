@@ -22,12 +22,11 @@ export class CaslAbilityFactory {
     >(Ability as AbilityClass<AppAbility>);
 
     if (user.role === UserRole.ADMIN) {
-      can(Action.Manage, 'all'); // read-write access to everything
+      can(Action.Manage, 'all');
     } else {
-      can(Action.Read, 'all'); // read-only access to everything
+      can(Action.Read, 'all');
     }
     return build({
-      // Read https://casl.js.org/v5/en/guide/subject-type-detection#use-classes-as-subject-types for details
       detectSubjectType: (item) =>
         item.constructor as ExtractSubjectType<Subjects>,
     });
