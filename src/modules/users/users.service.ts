@@ -9,9 +9,6 @@ import { MapUserDto } from './MapUserDto';
 
 @Injectable()
 export class UsersService {
-  findOneById(arg0: number) {
-    throw new Error('Method not implemented.');
-  }
   constructor(
     @InjectRepository(User) private readonly userRepository: Repository<User>,
     @InjectRepository(ContactInformation)
@@ -35,7 +32,9 @@ export class UsersService {
   findOne(user: string): Promise<User> {
     return this.userRepository.findOne({ username: user });
   }
-
+  findOneById(id: number) {
+    return this.userRepository.findOne(id);
+  }
   update(id: number, _updateUserDto: UpdateUserDto) {
     return `This action updates a #${id} user`;
   }
