@@ -6,6 +6,7 @@ import {
   InferSubjects,
 } from '@casl/ability';
 import { Injectable } from '@nestjs/common';
+import { UserPayload } from '../auth/UserPayload';
 import { User } from '../users/entities/user.entity';
 import { UserRole } from '../users/UserRole';
 import { Action } from './actions';
@@ -16,12 +17,12 @@ export type AppAbility = Ability<[Action, Subjects]>;
 
 @Injectable()
 export class CaslAbilityFactory {
-  createForUser(user: User) {
+  createForUser(user: UserPayload) {
     const { can, cannot, build } = new AbilityBuilder<
       Ability<[Action, Subjects]>
     >(Ability as AbilityClass<AppAbility>);
 
-    if (user.role === UserRole.ADMIN) {
+    if (user.getRole === UserRole.ADMIN) {
       can(Action.Manage, 'all');
     } else {
       can(Action.Read, 'all');
