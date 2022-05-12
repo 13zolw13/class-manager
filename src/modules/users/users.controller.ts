@@ -69,7 +69,13 @@ export class UsersController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.usersService.remove(+id);
+  remove(@Param('id') id: string, @Request() req) {
+    const ability = this.caslAbilityFactory.createForUser(req.user);
+    return ability.can(Action.Manage, 'all')
+      ? this.usersService.remove(+id)
+      : {
+          statusCode: STATUS_CODES.UNAUTHORIZED,
+          message: 'You are not authorized to perform this action',
+        };
   }
 }
