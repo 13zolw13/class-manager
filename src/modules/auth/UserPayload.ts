@@ -8,4 +8,7 @@ export class UserPayload {
   get getRole() {
     return this.role;
   }
+  get getUserId() {
+    return Number(this.id);
+  }
 }
