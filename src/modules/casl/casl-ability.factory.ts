@@ -24,12 +24,16 @@ export class CaslAbilityFactory {
 
     if (user.getRole === UserRole.ADMIN) {
       can(Action.Manage, 'all');
-    } else {
-      can(Action.Read, 'all');
     }
+    // } else {
+    //   // can(Action.Read, 'all');
+    // }
     if (user.getRole === UserRole.TEACHER || user.getRole === UserRole.ADMIN) {
       can(Action.Create, 'all');
     }
+
+    can(Action.Read, User, { id: user.getUserId });
+
     return build({
       detectSubjectType: (item) =>
         item.constructor as ExtractSubjectType<Subjects>,

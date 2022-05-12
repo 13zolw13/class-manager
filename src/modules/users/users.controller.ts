@@ -45,8 +45,11 @@ export class UsersController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.usersService.findOneById(+id);
+  async findOne(@Param('id') id: string, @Request() req) {
+    const user = await this.usersService.findOneById(+id);
+    const ability = this.caslAbilityFactory.createForUser(req.user);
+
+    return ability.can(Action.Read, user) ? user : STATUS_CODES.UNAUTHORIZED;
   }
 
   @Patch(':id')
@@ -56,8 +59,7 @@ export class UsersController {
     @Request() req,
   ) {
     const ability = this.caslAbilityFactory.createForUser(req.user);
-    console.log(req.user);
-    console.log(ability.can(Action.Manage, 'all'));
+
     return ability.can(Action.Manage, 'all')
       ? this.usersService.update(+id, updateUserDto)
       : {
