@@ -27,6 +27,9 @@ export class CaslAbilityFactory {
     } else {
       can(Action.Read, 'all');
     }
+    if (user.getRole === UserRole.TEACHER || user.getRole === UserRole.ADMIN) {
+      can(Action.Create, 'all');
+    }
     return build({
       detectSubjectType: (item) =>
         item.constructor as ExtractSubjectType<Subjects>,

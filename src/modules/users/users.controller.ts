@@ -30,8 +30,13 @@ export class UsersController {
 
   @Post()
   @UsePipes(new ValidationPipe({ transform: true }))
-  async create(@Body() createUserDto: CreateUserDto) {
-    return await this.usersService.create(createUserDto);
+  async create(@Body() createUserDto: CreateUserDto, @Request() req) {
+    const ability = this.caslAbilityFactory.createForUser(req.user);
+    console.log(req.user);
+    console.log(ability.can(Action.Create, 'all'));
+    return ability.can(Action.Create, 'all')
+      ? await this.usersService.create(createUserDto)
+      : STATUS_CODES.UNAUTHORIZED;
   }
 
   @Get()
