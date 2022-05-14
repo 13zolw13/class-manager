@@ -3,8 +3,9 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AuthService } from '../auth/auth.service';
 import { LocalAuthGuard } from '../auth/local-auth.guard';
 import { Action } from '../casl/actions';
-import { CaslAbilityFactory } from '../casl/casl-ability.factory';
-
+import { AppAbility, CaslAbilityFactory } from '../casl/casl-ability.factory';
+import { CheckPolicies } from '../guard/authorization.interface.handler';
+import { PoliciesGuard } from '../guard/policiesGuard';
 @Controller()
 export class AppController {
   constructor(
@@ -14,13 +15,14 @@ export class AppController {
 
   @ApiTags('login')
   @ApiBearerAuth()
-  @UseGuards(LocalAuthGuard)
   @Post('/login')
+  @UseGuards(LocalAuthGuard, PoliciesGuard)
+  @CheckPolicies((ability: AppAbility) => ability.can(Action.Manage, 'all'))
   async login(@Request() req) {
-    const ability = this.caslAbilityFactory.createForUser(req.user);
-    if (ability.can(Action.Manage, 'all')) {
-      console.log('can read all');
-    }
+    // const ability = this.caslAbilityFactory.createForUser(req.user);
+    // if (ability.can(Action.Manage, 'all')) {
+    //   console.log('can read all');
+    // }
     return this.authService.login(req.user);
   }
 }
