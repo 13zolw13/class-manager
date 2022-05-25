@@ -8,7 +8,7 @@ import { User } from '../users/entities/user.entity';
 export class DatabaseService implements TypeOrmOptionsFactory {
   constructor(private configService: ConfigService) {}
   createTypeOrmOptions(): TypeOrmModuleOptions {
-    return 'TEST' === 'TEST'
+    return process.env.NODE_ENV !== 'TEST'
       ? {
           name: 'default',
           type: 'postgres',
@@ -20,12 +20,13 @@ export class DatabaseService implements TypeOrmOptionsFactory {
           autoLoadEntities: true,
           entities: [User, ContactInformation],
           logging: true,
-          // migrationsTableName: 'migrations',
+          migrationsTableName: 'migrations',
           synchronize: false,
           migrations: [__dirname + '/migrations/*{.ts,.js}'],
           migrationsRun: true,
           cli: {
             migrationsDir: './src/migrations',
+            entitiesDir: './src/modules/users/entities',
           },
         }
       : {
@@ -45,8 +46,8 @@ export class DatabaseService implements TypeOrmOptionsFactory {
           migrations: ['/src/migrations/**/*{.ts,.js}'],
           synchronize: false,
           cli: {
-            entitiesDir: 'src/modules/users/entities',
-            migrationsDir: 'src/migrations',
+            entitiesDir: './src/modules/users/entities',
+            migrationsDir: './src/migrations',
           },
         };
   }
