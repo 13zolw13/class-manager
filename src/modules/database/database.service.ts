@@ -7,6 +7,10 @@ import { User } from '../users/entities/user.entity';
 @Injectable()
 export class DatabaseService implements TypeOrmOptionsFactory {
   constructor(private configService: ConfigService) {}
+
+  get isTest(): boolean {
+    return process.env.NODE_ENV === 'TEST';
+  }
   createTypeOrmOptions(): TypeOrmModuleOptions {
     return {
       name: this.configService.get<string>('database.name'),
@@ -19,17 +23,15 @@ export class DatabaseService implements TypeOrmOptionsFactory {
       autoLoadEntities: this.configService.get<boolean>(
         'database.autoLoadEntities',
       ),
-      entities:
-        process.env.NODE_ENV !== 'TEST'
-          ? [User, ContactInformation]
-          : ['/src/**/*.entity.{ts,js}'],
+      entities: this.isTest
+        ? [User, ContactInformation]
+        : ['/src/**/*.entity.{ts,js}'],
       logging: true,
       migrationsTableName: 'migrations',
       synchronize: false,
-      migrations:
-        process.env.NODE_ENV !== 'TEST'
-          ? [__dirname + '/migrations/*{.ts,.js}']
-          : ['/src/migrations/**/*{.ts,.js}'],
+      migrations: this.isTest
+        ? [__dirname + '/migrations/*{.ts,.js}']
+        : ['/src/migrations/**/*{.ts,.js}'],
       migrationsRun: true,
       cli: {
         migrationsDir: './src/migrations',
