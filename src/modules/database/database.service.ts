@@ -14,7 +14,7 @@ export class DatabaseService implements TypeOrmOptionsFactory {
   createTypeOrmOptions(): TypeOrmModuleOptions {
     return {
       name: this.configService.get<string>('database.name'),
-      type: 'postgres',
+      type: this.configService.get('database.type') || 'postgres',
       host: this.configService.get<string>('database.host'),
       port: this.configService.get<number>('database.port'),
       username: this.configService.get<string>('database.username'),

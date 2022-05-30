@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import databaseConfig from '../../config/database.config';
+import databaseConfig from '../../constant/database.config';
 
 @Module({
   imports: [

@@ -2,9 +2,9 @@ import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule } from '@nestjs/swagger';
 import * as session from 'express-session';
-import { corsOptions } from './config/corsOptions';
-import { sessionConfig } from './config/sessionConfig';
-import { SwaggerConfig } from './config/swagger';
+import { corsOptions } from './constant/corsOptions';
+import { sessionConfig } from './constant/sessionConfig';
+import { SwaggerConfig } from './constant/swagger';
 import { AppModule } from './modules/app/app.module';
 
 async function bootstrap() {
