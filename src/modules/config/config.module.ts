@@ -6,6 +6,7 @@ import databaseConfig from '../../config/database.config';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
+      expandVariables: true,
       envFilePath: [
         '.env',
         process.env.NODE_ENV === 'TEST' ? '.env.test' : '.env.dev',
