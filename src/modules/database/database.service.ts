@@ -8,47 +8,33 @@ import { User } from '../users/entities/user.entity';
 export class DatabaseService implements TypeOrmOptionsFactory {
   constructor(private configService: ConfigService) {}
   createTypeOrmOptions(): TypeOrmModuleOptions {
-    return process.env.NODE_ENV !== 'TEST'
-      ? {
-          name: 'default',
-          type: 'postgres',
-          host: 'localhost',
-          port: 5432,
-          username: 'postgres',
-          password: 'postgres',
-          database: 'classmanager',
-          autoLoadEntities: true,
-          entities: [User, ContactInformation],
-          logging: true,
-          migrationsTableName: 'migrations',
-          synchronize: false,
-          migrations: [__dirname + '/migrations/*{.ts,.js}'],
-          migrationsRun: true,
-          cli: {
-            migrationsDir: './src/migrations',
-            entitiesDir: './src/modules/users/entities',
-          },
-        }
-      : {
-          name: 'default',
-          type: 'postgres',
-          host: 'localhost',
-          port: 5432,
-          username: 'postgres',
-          password: 'postgres',
-          database: 'classmanager_test',
-          entities: ['/src/**/*.entity.{ts,js}'],
-          // entities: [User],
-
-          logging: true,
-          autoLoadEntities: true,
-          migrationsRun: true,
-          migrations: ['/src/migrations/**/*{.ts,.js}'],
-          synchronize: false,
-          cli: {
-            entitiesDir: './src/modules/users/entities',
-            migrationsDir: './src/migrations',
-          },
-        };
+    return {
+      name: this.configService.get<string>('database.name'),
+      type: 'postgres',
+      host: this.configService.get<string>('database.host'),
+      port: this.configService.get<number>('database.port'),
+      username: this.configService.get<string>('database.username'),
+      password: this.configService.get<string>('database.password'),
+      database: this.configService.get<string>('database.database'),
+      autoLoadEntities: this.configService.get<boolean>(
+        'database.autoLoadEntities',
+      ),
+      entities:
+        process.env.NODE_ENV !== 'TEST'
+          ? [User, ContactInformation]
+          : ['/src/**/*.entity.{ts,js}'],
+      logging: true,
+      migrationsTableName: 'migrations',
+      synchronize: false,
+      migrations:
+        process.env.NODE_ENV !== 'TEST'
+          ? [__dirname + '/migrations/*{.ts,.js}']
+          : ['/src/migrations/**/*{.ts,.js}'],
+      migrationsRun: true,
+      cli: {
+        migrationsDir: './src/migrations',
+        entitiesDir: './src/modules/users/entities',
+      },
+    } as TypeOrmModuleOptions;
   }
 }
